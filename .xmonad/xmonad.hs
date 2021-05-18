@@ -55,7 +55,7 @@ myModMask       = mod4Mask
 windowCount :: X (Maybe String)
 windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
 
-myWorkspaces    = [" dev "," www "," stream "," vscode "," game ","6","7","8","9"]
+myWorkspaces    = [" dev "," www "," stream "," vscode "," video "," audio "," gfx "," misc "," game "]
 myWorkspaceIndices = M.fromList $ zipWith (,) myWorkspaces [1..]
 
 clickable ws = "<action=xdotool key super+"++show i++">"++ws++"</action>"
