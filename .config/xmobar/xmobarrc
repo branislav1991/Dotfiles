@@ -19,6 +19,7 @@ Config { font = "xft:Ubuntu:weight=bold:pixelsize=18:antialias=true:hinting=true
                     , Run DiskU [("/", "<fn=1>\xf0c7 </fn> hdd: <free> free")] [] 60
                     , Run Com "uname" ["-r"] "" 36000
                     , Run Date "<fn=1>\xf133 </fn>  %b %d %Y - %H:%M " "date" 50
+		    , Run UnsafeStdinReader
                     ]
        , sepChar = "%"
        , alignSep = "}{"
