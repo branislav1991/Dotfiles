@@ -9,8 +9,9 @@ import Graphics.X11.ExtraTypes.XF86
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
-import XMonad.Layout.Reflect
+import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Spacing
+import XMonad.Util.Loggers
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
 
@@ -66,7 +67,7 @@ clickable ws = "<action=xdotool key super+"++show i++">"++ws++"</action>"
 myNormalBorderColor  = "#444444"
 myFocusedBorderColor = "#ffffff"
 
-addSpace = spacingRaw True (Border 0 0 0 0) True (Border 5 5 5 5) True
+addSpace = spacingRaw False (Border 8 8 8 8) True (Border 8 8 8 8) True
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -134,6 +135,9 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     , ((0                 , xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume 0 +2%")
     , ((0                 , xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume 0 -2%")
     , ((0                 , xF86XK_AudioMute), spawn "pactl set-sink-mute 0 toggle")
+    , ((0                 , xF86XK_AudioPrev), spawn "playerctl previous")
+    , ((0                 , xF86XK_AudioPlay), spawn "playerctl play-pause")
+    , ((0                 , xF86XK_AudioNext), spawn "playerctl next")
 
     -- Toggle the status bar gap
     -- Use this binding with avoidStruts from Hooks.ManageDocks.
@@ -197,10 +201,13 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = avoidStruts (tiled ||| Mirror tiled ||| Full)
+myLayout = avoidStruts (tiled ||| threeCol ||| Full)
   where
      -- default tiling algorithm partitions the screen into two panes
-     tiled   = addSpace $ reflectHoriz $ Tall nmaster delta ratio
+     tiled   = addSpace $ Tall nmaster delta ratio
+
+     -- threeCol
+     threeCol = addSpace $ ThreeColMid 1 (3/100) (1/2)
 
      -- The default number of windows in the master pane
      nmaster = 1
@@ -279,7 +286,7 @@ main = do
                 , ppTitle = xmobarColor "#b3afc2" "" . shorten 60                       -- Title of active window
                 , ppSep = "<fc=#666666> <fn=1>|</fn> </fc>"                             -- Separator
                 , ppUrgent = xmobarColor "#C45500" "" . wrap "!" "!"                    -- Urgent workspace
-                , ppOrder = \(ws:l:t:ex) -> ws : [t]
+                , ppOrder = \(ws:l:t:ex) -> [ws]++[t]
                 },
         startupHook        = myStartupHook
     }
