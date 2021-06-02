@@ -8,7 +8,9 @@ import qualified XMonad.StackSet as W
 import Graphics.X11.ExtraTypes.XF86
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Spacing
 import XMonad.Util.Loggers
@@ -249,7 +251,7 @@ myManageHook = composeAll
 -- By default, do nothing.
 myStartupHook = do
         spawnOnce "nitrogen --restore &"
-        spawnOnce "picom &"
+        spawnOnce "picom --config /home/branislav/.config/picom.conf &"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.

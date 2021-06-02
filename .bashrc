@@ -43,3 +43,9 @@ pathadd /opt/resolve/bin
 neofetch
 alias config='/usr/bin/git --git-dir=/home/branislav/.cfg/ --work-tree=/home/branislav'
 conda deactivate
+
+alias ls='lsd -alh'
+alias cat='bat'
+alias mv='mv -iv'
+alias cp='cp -riv'
+alias mkdir='mkdir -vp'
