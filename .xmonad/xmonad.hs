@@ -11,8 +11,10 @@ import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
+import XMonad.Layout.NoBorders
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Spacing
+import XMonad.Util.Dmenu
 import XMonad.Util.Loggers
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
@@ -80,10 +82,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
 
     -- launch dmenu
-    , ((modm,               xK_p     ), spawn "dmenu_run")
-
-    -- launch gmrun
-    , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
+    , ((modm,               xK_p     ), spawn "dmenu_run -c -bw 2 -l 20 -g 4 -p 'Run'")
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
@@ -203,7 +202,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = avoidStruts (tiled ||| threeCol ||| Full)
+myLayout = avoidStruts (tiled ||| threeCol ||| noBorders Full)
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = addSpace $ Tall nmaster delta ratio
@@ -238,8 +237,19 @@ myLayout = avoidStruts (tiled ||| threeCol ||| Full)
 myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
+    , className =? "confirm"	    --> doFloat
+    , className =? "file_progress"  --> doFloat
+    , className =? "dialog"         --> doFloat
+    , className =? "download"       --> doFloat
+    , className =? "error"          --> doFloat
+    , className =? "notification"   --> doFloat
+    , className =? "pinentry-gtk-2" --> doFloat
+    , className =? "splash"         --> doFloat
+    , className =? "toolbar"        --> doFloat
     , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore ]
+    , resource  =? "kdesktop"       --> doIgnore
+    , isFullscreen --> doFullFloat
+    ]
 
 ------------------------------------------------------------------------
 -- Startup hook
