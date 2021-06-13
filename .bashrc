@@ -39,6 +39,7 @@ pathadd() {
 }
 
 pathadd /opt/resolve/bin
+pathadd /home/branislav/.emacs.d/bin
 
 neofetch
 alias config='/usr/bin/git --git-dir=/home/branislav/.cfg/ --work-tree=/home/branislav'
