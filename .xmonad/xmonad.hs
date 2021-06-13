@@ -29,6 +29,9 @@ import qualified Data.Map as M
 --
 myTerminal      = "alacritty"
 
+-- The preferred browser program
+myBrowser       = "brave"
+
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = True
@@ -132,6 +135,18 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- Deincrement the number of windows in the master area
     , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
 
+    -- Run blueman
+    , ((modm              , xK_b), spawn "blueman-manager")
+
+    -- Run pavucontrol
+    , ((modm              , xK_a), spawn "pavucontrol")
+
+    -- Run internet browser
+    , ((modm		  , xK_i), spawn myBrowser)
+
+    -- Switch keyboards
+    , ((modm		  , xK_Escape), spawn "/home/branislav/.layout_switch.sh")
+
     -- Control audio
     , ((0                 , xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume 0 +2%")
     , ((0                 , xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume 0 -2%")
@@ -139,12 +154,6 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     , ((0                 , xF86XK_AudioPrev), spawn "playerctl previous")
     , ((0                 , xF86XK_AudioPlay), spawn "playerctl play-pause")
     , ((0                 , xF86XK_AudioNext), spawn "playerctl next")
-
-    -- Toggle the status bar gap
-    -- Use this binding with avoidStruts from Hooks.ManageDocks.
-    -- See also the statusBar function from Hooks.DynamicLog.
-    --
-    -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
 
     -- Quit xmonad
     , ((modm .|. shiftMask, xK_q     ), io exitSuccess)
